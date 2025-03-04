@@ -1,5 +1,5 @@
 # COMPSAC 2025
-## An LLM-based Approach for Data Service Discovery
+## LLM-driven Data Service Discovery in the Internet of Production
 
 Supplementary material for COMPSAC2025
 

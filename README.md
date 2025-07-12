@@ -1,5 +1,4 @@
-# COMPSAC 2025
-## LLM-driven Data Service Discovery in the Internet of Production
+# LLM-driven Data Service Discovery in the Internet of Production
 
 Supplementary material for COMPSAC2025
 

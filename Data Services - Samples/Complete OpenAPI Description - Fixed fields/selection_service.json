@@ -1,0 +1,75 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Pandas DataFrame Selection Service",
+    "description": "A service that filters a Pandas DataFrame based on a specified condition.",
+    "version": "1.0.0",
+    "x-service-type": "DISPATCH"
+  },
+  "paths": {
+    "/select": {
+      "post": {
+        "summary": "Filter rows from a Pandas DataFrame based on a condition.",
+        "operationId": "selectDataFrame",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SelectRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation. Filtered DataFrame is returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataFrame"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Invalid input data or invalid condition."
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "SelectRequest": {
+        "type": "object",
+        "properties": {
+          "dataframe": {
+            "$ref": "#/components/schemas/DataFrame"
+          },
+          "condition": {
+            "type": "string",
+            "description": "A boolean condition expressed in a query-like syntax (e.g., 'age > 30 and city == \"Rome\"')."
+          }
+        },
+        "required": [
+          "dataframe",
+          "condition"
+        ]
+      },
+      "DataFrame": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "additionalProperties": {
+            "type": ["string", "number", "boolean", "null"]
+          }
+        },
+        "description": "Pandas DataFrame represented as an array of row objects."
+      }
+    }
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Pandas DataFrame Transformation Service",
+    "description": "A service that applies transformation functions (e.g., uppercase, lowercase, type conversion) to specified attributes of a Pandas DataFrame.",
+    "version": "1.0.0",
+    "x-service-type": "DISPATCH"
+  },
+  "paths": {
+    "/transform": {
+      "post": {
+        "summary": "Apply transformation functions to specified attributes in a Pandas DataFrame.",
+        "operationId": "transformDataFrame",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransformRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation. Transformed DataFrame is returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataFrame"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Invalid input data or unsupported transformation function."
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "TransformRequest": {
+        "type": "object",
+        "properties": {
+          "dataframe": {
+            "$ref": "#/components/schemas/DataFrame"
+          },
+          "transformations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "attribute": {
+                  "type": "string",
+                  "description": "The column to transform."
+                },
+                "function": {
+                  "type": "string",
+                  "enum": ["uppercase", "lowercase", "int", "float", "string", "strip", "title"],
+                  "description": "The transformation function to apply."
+                }
+              },
+              "required": ["attribute", "function"]
+            },
+            "description": "List of transformations to apply."
+          }
+        },
+        "required": [
+          "dataframe",
+          "transformations"
+        ]
+      },
+      "DataFrame": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "additionalProperties": {
+            "type": ["string", "number", "boolean", "null"]
+          }
+        },
+        "description": "Pandas DataFrame represented as an array of row objects."
+      }
+    }
+  }
+}

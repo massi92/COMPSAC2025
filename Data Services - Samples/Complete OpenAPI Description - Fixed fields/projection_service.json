@@ -1,0 +1,78 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Pandas DataFrame Projection Service",
+    "description": "A service that projects a subset of specified attributes/columns from a Pandas DataFrame.",
+    "version": "1.0.0",
+    "x-service-type": "DISPATCH"
+  },
+  "paths": {
+    "/project": {
+      "post": {
+        "summary": "Select a subset of attributes/columns from a Pandas DataFrame.",
+        "operationId": "projectDataFrame",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProjectRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation. Projected DataFrame is returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataFrame"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Invalid input data or non-existing attributes."
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ProjectRequest": {
+        "type": "object",
+        "properties": {
+          "dataframe": {
+            "$ref": "#/components/schemas/DataFrame"
+          },
+          "attributes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of attributes/columns to retain in the output DataFrame."
+          }
+        },
+        "required": [
+          "dataframe",
+          "attributes"
+        ]
+      },
+      "DataFrame": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "additionalProperties": {
+            "type": ["string", "number", "boolean", "null"]
+          }
+        },
+        "description": "Pandas DataFrame represented as an array of row objects."
+      }
+    }
+  }
+}

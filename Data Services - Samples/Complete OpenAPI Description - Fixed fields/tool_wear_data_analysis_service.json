@@ -1,0 +1,131 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "CNC Machine Tool Wear Data Analysis Service",
+    "description": "A service that analyzes CNC machine tool wear data for predictive maintenance.",
+    "version": "1.0.0",
+    "x-service-type": "MONITOR"
+  },
+  "paths": {
+    "/analyze_tool_wear": {
+      "post": {
+        "summary": "Analyze CNC Machine Tool Wear Data",
+        "description": "Processes and analyzes tool wear data to predict maintenance needs.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "tool_wear_logs": {
+                    "type": "array",
+                    "description": "Time-series tool wear measurement data.",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "timestamp": {
+                          "type": "string",
+                          "format": "date-time",
+                          "description": "Timestamp of the wear measurement."
+                        },
+                        "wear_level": {
+                          "type": "number",
+                          "description": "Measured tool wear level at the given timestamp."
+                        }
+                      },
+                      "required": ["timestamp", "wear_level"]
+                    }
+                  },
+                  "analysis_parameters": {
+                    "type": "object",
+                    "description": "Parameters to control the analysis process.",
+                    "properties": {
+                      "wear_threshold": {
+                        "type": "number",
+                        "description": "Maximum acceptable tool wear level."
+                      },
+                      "prediction_horizon": {
+                        "type": "integer",
+                        "description": "Number of future time units to predict tool wear."
+                      }
+                    },
+                    "required": ["wear_threshold", "prediction_horizon"]
+                  }
+                },
+                "required": ["tool_wear_logs", "analysis_parameters"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful tool wear data analysis.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "current_wear_assessment": {
+                      "type": "object",
+                      "description": "Current tool wear status.",
+                      "properties": {
+                        "wear_level": {
+                          "type": "number",
+                          "description": "Current measured wear level."
+                        },
+                        "status": {
+                          "type": "string",
+                          "description": "Assessment status, e.g., 'normal', 'warning', 'critical'."
+                        }
+                      },
+                      "required": ["wear_level", "status"]
+                    },
+                    "wear_prediction": {
+                      "type": "object",
+                      "description": "Predicted future wear trajectory.",
+                      "properties": {
+                        "predictions": {
+                          "type": "array",
+                          "description": "Predicted wear levels over the prediction horizon.",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "timestamp": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Future timestamp of the prediction."
+                              },
+                              "predicted_wear_level": {
+                                "type": "number",
+                                "description": "Predicted wear level at the given timestamp."
+                              }
+                            },
+                            "required": ["timestamp", "predicted_wear_level"]
+                          }
+                        }
+                      },
+                      "required": ["predictions"]
+                    },
+                    "maintenance_recommendations": {
+                      "type": "array",
+                      "description": "Recommended maintenance actions based on analysis.",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "required": [
+                    "current_wear_assessment",
+                    "wear_prediction",
+                    "maintenance_recommendations"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

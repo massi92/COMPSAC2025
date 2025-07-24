@@ -1,0 +1,77 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "PCA Feature Selection Service",
+    "description": "A service that applies the PCA (Principal Component Analysis) feature selection algorithm to a Pandas DataFrame.",
+    "version": "1.0.0",
+    "x-service-type": "DISPATCH"
+  },
+  "paths": {
+    "/apply_pca": {
+      "post": {
+        "summary": "Apply PCA feature selection algorithm",
+        "description": "Applies PCA to the specified columns of a Pandas DataFrame and returns the transformed DataFrame with selected features.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "dataframe": {
+                    "type": "object",
+                    "description": "Input Pandas DataFrame represented as a JSON object (i.e., a dict of column names to lists of values)"
+                  },
+                  "columns_for_pca": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "List of column names to be used for PCA"
+                  },
+                  "threshold": {
+                    "type": "number",
+                    "format": "float",
+                    "description": "Threshold for the cumulative explained variance (between 0 and 1)"
+                  }
+                },
+                "required": [
+                  "dataframe",
+                  "columns_for_pca",
+                  "threshold"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "PCA applied successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "selected_dataframe": {
+                      "type": "object",
+                      "description": "The resulting DataFrame after applying PCA, represented as a JSON object"
+                    }
+                  },
+                  "required": [
+                    "selected_dataframe"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    }
+  }
+}

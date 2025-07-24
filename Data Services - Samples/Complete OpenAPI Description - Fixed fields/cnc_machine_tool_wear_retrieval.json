@@ -1,0 +1,77 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CNC Machine Tool Wear Data Retrieval",
+    "version": "1.0.0",
+    "description": "A service to retrieve CNC machine tool wear data.",
+    "x-service-type": "COLLECT"
+  },
+  "paths": {
+    "/read-cnc-tool-wear": {
+      "get": {
+        "summary": "Retrieve CNC machine tool wear data by file path",
+        "tags": ["CNC Tool Wear"],
+        "parameters": [
+          {
+            "name": "file_path",
+            "in": "query",
+            "description": "The full path to the CNC machine tool wear data file.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "/data/wear_logs/tool123.csv"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful retrieval of tool wear data.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "timestamp": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-07-24T14:35:00Z"
+                      },
+                      "tool_id": {
+                        "type": "string",
+                        "example": "T-01"
+                      },
+                      "wear_level": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 0.37
+                      }
+                    },
+                    "required": ["timestamp", "tool_id", "wear_level"]
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Tool wear data file not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "File not found at specified path."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

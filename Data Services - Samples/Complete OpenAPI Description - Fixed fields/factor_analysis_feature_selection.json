@@ -1,0 +1,85 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Factor Analysis Feature Selection Service",
+    "description": "A service that applies the Factor Analysis feature selection algorithm to a Pandas DataFrame.",
+    "version": "1.0.0",
+    "x-service-type": "DISPATCH"
+  },
+  "paths": {
+    "/apply_factor_analysis": {
+      "post": {
+        "summary": "Apply Factor Analysis feature selection",
+        "description": "Applies the Factor Analysis algorithm to the specified columns in the input DataFrame and returns a DataFrame containing only the selected variables.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "dataframe": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": ["number", "string", "boolean", "null"]
+                      }
+                    },
+                    "description": "List of records representing the input Pandas DataFrame"
+                  },
+                  "columns_for_factor_analysis": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Names of the columns to include in the Factor Analysis"
+                  },
+                  "threshold": {
+                    "type": "number",
+                    "description": "Threshold for the explained variance percentage (e.g., 0.95 for 95%)"
+                  }
+                },
+                "required": [
+                  "dataframe",
+                  "columns_for_factor_analysis",
+                  "threshold"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response with selected features",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "selected_dataframe": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": {
+                          "type": ["number", "string", "boolean", "null"]
+                        }
+                      },
+                      "description": "List of records representing the selected features after Factor Analysis"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    }
+  }
+}

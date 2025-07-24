@@ -1,0 +1,85 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Pandas DataFrame DateTime Conversion Service",
+    "version": "1.0.0",
+    "description": "A service that converts a specified column in a Pandas DataFrame (provided as JSON) to datetime format.",
+    "x-service-type": "DISPATCH"
+  },
+  "paths": {
+    "/convert_datetime": {
+      "post": {
+        "summary": "Convert a DataFrame column to datetime",
+        "description": "Converts the specified column in the input DataFrame to datetime format. The DataFrame should be provided as JSON (e.g., array of objects).",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "dataframe": {
+                    "type": "array",
+                    "description": "The input DataFrame represented as an array of JSON objects (rows). Each object is a row with key-value pairs as column-value.",
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": true
+                    }
+                  },
+                  "column_name": {
+                    "type": "string",
+                    "description": "The name of the column in the DataFrame to convert to datetime."
+                  }
+                },
+                "required": [
+                  "dataframe",
+                  "column_name"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The DataFrame with the specified column converted to datetime format, returned as JSON.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "dataframe": {
+                      "type": "array",
+                      "description": "The converted DataFrame represented as an array of JSON objects (rows). The specified column values are converted to ISO 8601 datetime strings.",
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": true
+                      }
+                    }
+                  },
+                  "required": ["dataframe"]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input or conversion error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Error message describing what went wrong."
+                    }
+                  },
+                  "required": ["error"]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

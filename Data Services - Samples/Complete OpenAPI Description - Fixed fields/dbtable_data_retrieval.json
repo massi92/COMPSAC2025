@@ -1,0 +1,61 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Database Table Data Retrieval",
+    "version": "1.0.0",
+    "description": "A service to retrieve data from a specified database table.",
+    "x-service-type": "COLLECT"
+  },
+  "paths": {
+    "/read-data-from-database": {
+      "get": {
+        "summary": "Retrieve data from a database table",
+        "parameters": [
+          {
+            "name": "connection_string",
+            "in": "query",
+            "description": "The connection string for the database.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "table_name",
+            "in": "query",
+            "description": "The name of the database table.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response with data from the specified table",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": true
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Database table not found"
+          },
+          "400": {
+            "description": "Invalid request parameters"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    }
+  }
+}

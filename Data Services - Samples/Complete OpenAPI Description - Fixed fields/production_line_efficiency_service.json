@@ -1,0 +1,98 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Production Line Efficiency Comparison Service",
+    "description": "A service that compares and analyzes production line efficiency models",
+    "version": "1.0.0",
+    "x-service-type": "MONITOR"
+  },
+  "paths": {
+    "/compare_production_efficiency": {
+      "post": {
+        "summary": "Compare Production Line Efficiency Models",
+        "description": "Compare multiple production line efficiency models and generate performance insights.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "production_models": {
+                    "type": "array",
+                    "description": "Collection of production line efficiency models to compare",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "model_id": {
+                          "type": "string",
+                          "description": "Unique identifier for the production model"
+                        },
+                        "parameters": {
+                          "type": "object",
+                          "description": "Parameters and metrics defining the production model",
+                          "additionalProperties": true
+                        }
+                      },
+                      "required": ["model_id", "parameters"]
+                    }
+                  },
+                  "comparison_metrics": {
+                    "type": "array",
+                    "description": "List of metrics to use for model comparison",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": ["production_models", "comparison_metrics"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful comparison of production line efficiency models",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "model_rankings": {
+                      "type": "array",
+                      "description": "Ranked models based on comparison metrics",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "model_id": {
+                            "type": "string",
+                            "description": "Unique identifier of the model"
+                          },
+                          "rank": {
+                            "type": "integer",
+                            "description": "Rank position of the model"
+                          },
+                          "score": {
+                            "type": "number",
+                            "description": "Overall score based on comparison metrics"
+                          }
+                        },
+                        "required": ["model_id", "rank", "score"]
+                      }
+                    },
+                    "comparative_analysis": {
+                      "type": "object",
+                      "description": "Detailed analysis of model differences",
+                      "additionalProperties": true
+                    }
+                  },
+                  "required": ["model_rankings", "comparative_analysis"]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

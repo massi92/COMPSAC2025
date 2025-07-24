@@ -1,0 +1,58 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "JSON Data Retrieval API",
+    "version": "1.0.0",
+    "description": "An API service to retrieve the content of a JSON file from a specified file path.",
+    "x-service-type": "COLLECT"
+  },
+  "paths": {
+    "/read-json": {
+      "get": {
+        "summary": "Retrieve JSON content from a specified file path",
+        "operationId": "getJsonContent",
+        "parameters": [
+          {
+            "name": "file_path",
+            "in": "query",
+            "description": "The absolute or relative path to the JSON file.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved JSON content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true
+                },
+                "examples": {
+                  "sample": {
+                    "summary": "Sample JSON content",
+                    "value": {
+                      "key": "value"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request – missing or invalid file path"
+          },
+          "404": {
+            "description": "JSON file not found at the given path"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    }
+  }
+}

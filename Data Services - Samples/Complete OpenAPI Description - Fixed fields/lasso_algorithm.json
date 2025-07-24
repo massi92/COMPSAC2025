@@ -1,0 +1,83 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Lasso Regression Service",
+    "description": "A service that performs Lasso Regression on a dataset provided as a JSON-encoded Pandas DataFrame.",
+    "version": "1.0.0",
+    "x-service-type": "MONITOR",
+    "x-service-task-type": "PREDICTION"
+  },
+  "paths": {
+    "/lasso_regression": {
+      "post": {
+        "summary": "Perform Lasso Regression",
+        "description": "Executes Lasso Regression on the provided dataset using the specified independent and dependent variables.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "dataframe": {
+                    "type": "object",
+                    "description": "JSON-encoded representation of a Pandas DataFrame where keys are column names and values are lists of column values"
+                  },
+                  "independent_variables": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "List of column names to be used as independent variables"
+                  },
+                  "dependent_variable": {
+                    "type": "string",
+                    "description": "Column name to be used as the dependent variable"
+                  },
+                  "alpha": {
+                    "type": "number",
+                    "description": "Regularization strength parameter for Lasso Regression"
+                  }
+                },
+                "required": [
+                  "dataframe",
+                  "independent_variables",
+                  "dependent_variable",
+                  "alpha"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Lasso Regression performed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "model_summary": {
+                      "type": "object",
+                      "description": "Summary statistics and diagnostics of the trained Lasso Regression model"
+                    },
+                    "coefficients": {
+                      "type": "object",
+                      "description": "Mapping of independent variable names to their corresponding coefficients"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input parameters"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    }
+  }
+}

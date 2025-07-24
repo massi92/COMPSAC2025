@@ -1,0 +1,102 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Ridge Regression Service",
+    "description": "A service that performs Ridge Regression on input data represented as a Pandas DataFrame.",
+    "version": "1.0.0",
+    "x-service-type": "MONITOR",
+    "x-service-task-type": "PREDICTION"
+  },
+  "paths": {
+    "/ridge_regression": {
+      "post": {
+        "summary": "Perform Ridge Regression",
+        "description": "Execute Ridge Regression using the provided dataset and parameters.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "dataframe": {
+                    "type": "object",
+                    "description": "Input data as a JSON representation of a Pandas DataFrame (e.g., dictionary of columns)."
+                  },
+                  "independent_variables": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "List of column names to be used as independent variables."
+                  },
+                  "dependent_variable": {
+                    "type": "string",
+                    "description": "Name of the dependent variable column."
+                  },
+                  "alpha": {
+                    "type": "number",
+                    "format": "float",
+                    "description": "Regularization strength parameter (alpha). Must be a non-negative number."
+                  }
+                },
+                "required": [
+                  "dataframe",
+                  "independent_variables",
+                  "dependent_variable",
+                  "alpha"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ridge Regression performed successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "model_summary": {
+                      "type": "object",
+                      "description": "Summary statistics and evaluation metrics of the Ridge Regression model."
+                    },
+                    "coefficients": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "number",
+                        "format": "float"
+                      },
+                      "description": "Mapping of independent variable names to their regression coefficients."
+                    }
+                  },
+                  "required": [
+                    "model_summary",
+                    "coefficients"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data or parameters.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Error message describing the issue."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

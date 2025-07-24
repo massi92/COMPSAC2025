@@ -1,0 +1,78 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Pandas DataFrame Anonymization Service",
+    "description": "A service that applies anonymization to specified attributes/columns of a Pandas DataFrame.",
+    "version": "1.0.0",
+    "x-service-type": "DISPATCH"
+  },
+  "paths": {
+    "/anonymize": {
+      "post": {
+        "summary": "Apply anonymization to specified attributes/columns of a Pandas DataFrame.",
+        "operationId": "anonymizeDataFrame",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AnonymizeRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation. Anonymized DataFrame is returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataFrame"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Invalid input data."
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AnonymizeRequest": {
+        "type": "object",
+        "properties": {
+          "dataframe": {
+            "$ref": "#/components/schemas/DataFrame"
+          },
+          "attributes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of attributes/columns to anonymize."
+          }
+        },
+        "required": [
+          "dataframe",
+          "attributes"
+        ]
+      },
+      "DataFrame": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "additionalProperties": {
+            "type": ["string", "number", "boolean", "null"]
+          }
+        },
+        "description": "Pandas DataFrame represented as an array of row objects."
+      }
+    }
+  }
+}

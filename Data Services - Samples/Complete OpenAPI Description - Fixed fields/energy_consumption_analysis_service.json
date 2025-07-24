@@ -1,0 +1,120 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Energy Consumption Analysis Service",
+    "description": "A service that analyzes and provides insights into industrial energy consumption patterns.",
+    "version": "1.0.0",
+    "x-service-type": "MONITOR"
+  },
+  "paths": {
+    "/analyze_energy_consumption": {
+      "post": {
+        "summary": "Analyze Industrial Energy Consumption",
+        "description": "Process time-series energy consumption data to identify efficiency opportunities.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "energy_data": {
+                    "type": "array",
+                    "description": "Time-series energy consumption measurements.",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "timestamp": {
+                          "type": "string",
+                          "format": "date-time",
+                          "description": "ISO 8601 timestamp of the measurement."
+                        },
+                        "consumption": {
+                          "type": "number",
+                          "description": "Energy consumption value at the timestamp."
+                        },
+                        "unit": {
+                          "type": "string",
+                          "description": "Unit of the energy consumption measurement (e.g., kWh)."
+                        }
+                      },
+                      "required": ["timestamp", "consumption"]
+                    }
+                  },
+                  "analysis_parameters": {
+                    "type": "object",
+                    "description": "Parameters to customize the analysis.",
+                    "properties": {
+                      "peak_load_threshold": {
+                        "type": "number",
+                        "description": "Maximum acceptable peak energy load."
+                      },
+                      "efficiency_target": {
+                        "type": "number",
+                        "description": "Target energy efficiency percentage (0-100).",
+                        "minimum": 0,
+                        "maximum": 100
+                      }
+                    },
+                    "required": []
+                  }
+                },
+                "required": ["energy_data", "analysis_parameters"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful energy consumption analysis.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "energy_efficiency_score": {
+                      "type": "number",
+                      "description": "Overall energy efficiency rating (e.g., 0-100 scale)."
+                    },
+                    "optimization_recommendations": {
+                      "type": "array",
+                      "description": "Suggested energy consumption improvements.",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "consumption_patterns": {
+                      "type": "object",
+                      "description": "Detailed breakdown of energy consumption patterns.",
+                      "additionalProperties": {
+                        "type": "number"
+                      }
+                    }
+                  },
+                  "required": ["energy_efficiency_score", "optimization_recommendations", "consumption_patterns"]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Error message describing the issue."
+                    }
+                  },
+                  "required": ["error"]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

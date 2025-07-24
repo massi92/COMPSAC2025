@@ -1,0 +1,60 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Machine Sensor Log Data Retrieval",
+    "version": "1.0.0",
+    "description": "A service that retrieves real-time machine sensor log data from specified file paths.",
+    "x-service-type": "COLLECT"
+  },
+  "paths": {
+    "/read-machine-sensor-log": {
+      "get": {
+        "summary": "Retrieve machine sensor log data",
+        "description": "Fetches the machine sensor log data from the specified file path provided via query parameter.",
+        "parameters": [
+          {
+            "name": "file_path",
+            "in": "query",
+            "description": "Absolute path to the machine sensor log file to be retrieved.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful retrieval of machine sensor log data.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": true
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Machine sensor log file not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "File not found at specified path."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

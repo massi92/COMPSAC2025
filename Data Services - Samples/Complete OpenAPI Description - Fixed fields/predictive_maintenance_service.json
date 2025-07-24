@@ -1,0 +1,92 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Predictive Maintenance Algorithm Service",
+    "description": "A service that applies predictive maintenance algorithms to time-series sensor log data to anticipate equipment failures.",
+    "version": "1.0.0",
+    "x-service-type": "MONITOR"
+  },
+  "paths": {
+    "/predict_maintenance": {
+      "post": {
+        "summary": "Apply Predictive Maintenance Algorithm",
+        "description": "Analyzes machine sensor log data to predict potential equipment failures within a specified time horizon.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "sensor_data": {
+                    "type": "array",
+                    "description": "Time-series sensor log data for machine performance. Each object represents a data point or a timestamped reading.",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "timestamp": {
+                          "type": "string",
+                          "format": "date-time",
+                          "description": "Timestamp of the sensor reading"
+                        },
+                        "values": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "number"
+                          },
+                          "description": "Sensor readings keyed by sensor type or name"
+                        }
+                      },
+                      "required": ["timestamp", "values"]
+                    }
+                  },
+                  "prediction_horizon": {
+                    "type": "integer",
+                    "description": "Number of time units (e.g., hours, days) into the future for which the prediction is made."
+                  }
+                },
+                "required": [
+                  "sensor_data",
+                  "prediction_horizon"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful prediction of maintenance needs.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "failure_probability": {
+                      "type": "number",
+                      "format": "float",
+                      "description": "Probability (0 to 1) of equipment failure within the prediction horizon."
+                    },
+                    "recommended_actions": {
+                      "type": "array",
+                      "description": "List of suggested maintenance actions based on prediction.",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "required": ["failure_probability", "recommended_actions"]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data or missing required fields."
+          },
+          "500": {
+            "description": "Server error while processing the request."
+          }
+        }
+      }
+    }
+  }
+}

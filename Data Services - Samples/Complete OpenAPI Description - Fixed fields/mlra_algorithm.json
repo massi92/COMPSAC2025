@@ -1,0 +1,84 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Multiple Linear Regression Service",
+    "description": "A service that implements a Multiple Linear Regression model using a dataset represented as a JSON object compatible with a Pandas DataFrame.",
+    "version": "1.0.0",
+    "x-service-type": "MONITOR",
+    "x-service-task-type": "PREDICTION"
+  },
+  "paths": {
+    "/multiple_linear_regression": {
+      "post": {
+        "summary": "Perform Multiple Linear Regression",
+        "description": "Perform Multiple Linear Regression using the input dataset provided in JSON format.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "dataframe": {
+                    "type": "object",
+                    "description": "Dataset represented as a dictionary where keys are column names and values are arrays of column data.",
+                    "additionalProperties": {
+                      "type": "array",
+                      "items": {
+                        "type": ["string", "number", "boolean", "null"]
+                      }
+                    }
+                  },
+                  "independent_variables": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "List of column names to be used as independent variables."
+                  },
+                  "dependent_variable": {
+                    "type": "string",
+                    "description": "Column name to be used as the dependent variable."
+                  }
+                },
+                "required": [
+                  "dataframe",
+                  "independent_variables",
+                  "dependent_variable"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Regression model successfully computed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "model_summary": {
+                      "type": "object",
+                      "description": "Summary statistics of the regression model."
+                    },
+                    "coefficients": {
+                      "type": "object",
+                      "description": "Mapping of independent variables to their estimated coefficients."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input. Check the request payload format."
+          },
+          "500": {
+            "description": "Internal server error while processing regression."
+          }
+        }
+      }
+    }
+  }
+}

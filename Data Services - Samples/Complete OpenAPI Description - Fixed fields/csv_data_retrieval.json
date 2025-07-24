@@ -1,0 +1,51 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CSV Data Retrieval API",
+    "version": "1.0.0",
+    "description": "An API service for retrieving the contents of a CSV file from a specified path.",
+    "x-service-type": "COLLECT"
+  },
+  "paths": {
+    "/read-csv": {
+      "get": {
+        "summary": "Retrieve CSV content from a specified file path",
+        "operationId": "getCsvContent",
+        "parameters": [
+          {
+            "name": "file_path",
+            "in": "query",
+            "description": "The full path to the CSV file to retrieve.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "/data/files/sample.csv"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "CSV file retrieved successfully.",
+            "content": {
+              "text/csv": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request — missing or invalid file path."
+          },
+          "404": {
+            "description": "CSV file not found at the specified path."
+          },
+          "500": {
+            "description": "Internal server error while processing the CSV file."
+          }
+        }
+      }
+    }
+  }
+}

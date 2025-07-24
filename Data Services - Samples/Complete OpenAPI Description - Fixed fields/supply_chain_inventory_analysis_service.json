@@ -1,0 +1,116 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Supply Chain Inventory Data Analysis Service",
+    "description": "A service that analyzes supply chain inventory data for optimization",
+    "version": "1.0.0",
+    "x-service-type": "MONITOR"
+  },
+  "paths": {
+    "/analyze_inventory": {
+      "post": {
+        "summary": "Analyze Supply Chain Inventory Data",
+        "description": "Process and analyze inventory data to identify optimization opportunities",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "inventory_data": {
+                    "type": "array",
+                    "description": "Time-series supply chain inventory data",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "timestamp": {
+                          "type": "string",
+                          "format": "date-time",
+                          "description": "Timestamp of the inventory record"
+                        },
+                        "product_id": {
+                          "type": "string",
+                          "description": "Unique identifier for the product"
+                        },
+                        "quantity": {
+                          "type": "integer",
+                          "description": "Quantity of product in inventory at the timestamp"
+                        },
+                        "location_id": {
+                          "type": "string",
+                          "description": "Identifier of the inventory location"
+                        }
+                      },
+                      "required": ["timestamp", "product_id", "quantity"]
+                    }
+                  },
+                  "analysis_parameters": {
+                    "type": "object",
+                    "properties": {
+                      "stockout_risk_tolerance": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 100,
+                        "description": "Maximum acceptable stockout risk percentage (0-100)"
+                      },
+                      "holding_cost_weight": {
+                        "type": "number",
+                        "minimum": 0,
+                        "description": "Weight of holding costs in optimization"
+                      }
+                    },
+                    "required": ["stockout_risk_tolerance", "holding_cost_weight"]
+                  }
+                },
+                "required": [
+                  "inventory_data",
+                  "analysis_parameters"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful supply chain inventory analysis",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "inventory_optimization_recommendations": {
+                      "type": "array",
+                      "description": "Recommendations for inventory management",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "risk_assessment": {
+                      "type": "object",
+                      "description": "Detailed inventory risk analysis",
+                      "properties": {
+                        "stockout_probability": {
+                          "type": "number",
+                          "description": "Estimated probability of stockouts"
+                        },
+                        "holding_cost_estimate": {
+                          "type": "number",
+                          "description": "Estimated holding cost based on current inventory"
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "inventory_optimization_recommendations",
+                    "risk_assessment"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

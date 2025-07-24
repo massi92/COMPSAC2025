@@ -1,0 +1,109 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "1D Interpolation API",
+    "version": "1.0.0",
+    "description": "API for performing 1D interpolation on a dataset using Pandas.",
+    "x-service-type": "DISPATCH"
+  },
+  "paths": {
+    "/interpolate": {
+      "post": {
+        "summary": "Perform 1D interpolation on a dataset",
+        "operationId": "interpolate1D",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "dataset": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "CSV file containing the dataset"
+                  },
+                  "timestamp_column": {
+                    "type": "string",
+                    "description": "The name of the column containing timestamps"
+                  },
+                  "reference_temporal_axis": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "description": "Array of timestamps representing the reference temporal axis for interpolation"
+                  },
+                  "method": {
+                    "type": "string",
+                    "enum": [
+                      "linear",
+                      "time",
+                      "index",
+                      "pad",
+                      "nearest",
+                      "zero",
+                      "slinear",
+                      "quadratic",
+                      "cubic",
+                      "spline",
+                      "barycentric",
+                      "polynomial",
+                      "krogh",
+                      "piecewise_polynomial",
+                      "pchip",
+                      "akima"
+                    ],
+                    "default": "linear",
+                    "description": "Interpolation method to use"
+                  }
+                },
+                "required": [
+                  "dataset",
+                  "timestamp_column",
+                  "reference_temporal_axis"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Interpolated dataset returned successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "interpolated_dataset": {
+                      "type": "string",
+                      "format": "byte",
+                      "description": "Base64-encoded interpolated dataset in CSV format"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input parameters or file format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Error message describing the issue"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -174,7 +174,8 @@
 
 ###  http://www.semanticweb.org/ADS/CollectService
 :CollectService rdf:type owl:Class ;
-                rdfs:subClassOf :DataService .
+                rdfs:subClassOf :DataService ;
+                rdfs:comment "Service to read data from a data provider or from an actor (e.g., in a supply chain context)" .
 
 
 ###  http://www.semanticweb.org/ADS/ComparisonService
@@ -191,7 +192,8 @@
 
 
 ###  http://www.semanticweb.org/ADS/DataService
-:DataService rdf:type owl:Class .
+:DataService rdf:type owl:Class ;
+             rdfs:comment "Class to model the taxonomy of available atomic data services." .
 
 
 ###  http://www.semanticweb.org/ADS/Dataset
@@ -204,12 +206,14 @@
 
 ###  http://www.semanticweb.org/ADS/DispatchService
 :DispatchService rdf:type owl:Class ;
-                 rdfs:subClassOf :DataService .
+                 rdfs:subClassOf :DataService ;
+                 rdfs:comment "Service to forward data from a data service to another and to manipulate data" .
 
 
 ###  http://www.semanticweb.org/ADS/MonitorService
 :MonitorService rdf:type owl:Class ;
-                rdfs:subClassOf :DataService .
+                rdfs:subClassOf :DataService ;
+                rdfs:comment "Service to build classification models, prediction models, compare data" .
 
 
 ###  http://www.semanticweb.org/ADS/PredictionService

@@ -6,6 +6,12 @@
     "version": "1.0.0",
     "x-service-type": "DISPATCH"
   },
+  "servers": [
+    {
+      "url": "http://localhost:5000",
+      "description": "Local development server"
+    }
+  ],
   "paths": {
     "/project": {
       "post": {

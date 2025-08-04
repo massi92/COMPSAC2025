@@ -6,6 +6,12 @@
     "description": "An API service for retrieving the contents of a CSV file from a specified path.",
     "x-service-type": "COLLECT"
   },
+  "servers": [
+    {
+      "url": "http://localhost:5000",
+      "description": "Local development server"
+    }
+  ],
   "paths": {
     "/read-csv": {
       "get": {
